@@ -132,7 +132,6 @@ public class RdbMirrorDbSyncService {
             mappingConfig.setDbMapping(dbMapping);
             dbMapping.setDatabase(dml.getDatabase());
             dbMapping.setTable(dml.getTable());
-            dbMapping.setTargetDb(dml.getDatabase());
             dbMapping.setTargetTable(dml.getTable());
             dbMapping.setMapAll(true);
             List<String> pkNames = dml.getPkNames();
