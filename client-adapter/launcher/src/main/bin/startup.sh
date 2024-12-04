@@ -80,7 +80,7 @@ else
 fi
 
 JAVA_OPTS=" $JAVA_OPTS -Djava.awt.headless=true -Djava.net.preferIPv4Stack=true -Dfile.encoding=UTF-8"
-ADAPTER_OPTS="-DappName=canal-adapter"
+ADAPTER_OPTS="-DappName=canal-adapter -Dspring.cloud.bootstrap.enabled=true"
 
 for i in $base/lib/*;
     do CLASSPATH=$i:"$CLASSPATH";
