@@ -1,5 +1,5 @@
 # amd64
-FROM canal/osbase:v3-amd64
+FROM planyun/osbase:v1
 
 MAINTAINER agapple (jianghang115@gmail.com)
 

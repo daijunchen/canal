@@ -5,16 +5,16 @@ ARG jdk_rpm
 ARG platform_env
 
 MAINTAINER agapple (jianghang115@gmail.com)
-# env DOWNLOAD_AMD_LINK="https://download.oracle.com/otn/java/jdk/8u361-b09/0ae14417abb444ebb02b9815e2103550/jdk-8u361-linux-x64.rpm"
+ENV DOWNLOAD_AMD_LINK="https://builds.openlogic.com/downloadJDK/openlogic-openjdk-jre/11.0.25+9/openlogic-openjdk-jre-11.0.25+9-linux-x64-el.rpm"
 # env DOWNLOAD_ARM_LINK="https://download.oracle.com/otn/java/jdk/8u361-b09/0ae14417abb444ebb02b9815e2103550/jdk-8u361-linux-aarch64.rpm"
-env NODE_EPORTER_LINK="https://github.com/prometheus/node_exporter/releases/download/v1.6.1/node_exporter-1.6.1.linux-amd64.tar.gz"
+ENV NODE_EPORTER_LINK="https://github.com/prometheus/node_exporter/releases/download/v1.6.1/node_exporter-1.6.1.linux-amd64.tar.gz"
 
 # install system
 # update yum config, fix "centos6.x yum install failure && Determining fastest mirrors slow" problems
 COPY yum/ /tmp/
 RUN \
     /bin/cp /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.bak && \
-    /bin/cp -f /tmp/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo && \
+    /bin/cp -f /tmp/Centos-7.repo /etc/yum.repos.d/CentOS-Base.repo && \
     /bin/cp /etc/yum/pluginconf.d/fastestmirror.conf /etc/yum/pluginconf.d/fastestmirror.conf.bak && \
     awk '{ if($0=="enabled=1"){print "enabled=0";} else{print $0;} }' /etc/yum/pluginconf.d/fastestmirror.conf.bak > /etc/yum/pluginconf.d/fastestmirror.conf && \
     /bin/cp /etc/yum.conf /etc/yum.conf.bak && \
@@ -47,10 +47,11 @@ RUN \
 COPY ${jdk_rpm} /tmp/
 RUN \
     touch /var/lib/rpm/* && \
+    wget ${DOWNLOAD_AMD_LINK} -O /tmp/jre-11.rpm &&\
     #if [ "$BUILDPLATFORM" == "linux/amd64" ] ; then wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=xxx; oraclelicense=accept-securebackup-cookie" "$DOWNLOAD_AMD_LINK" -O /tmp/jdk-8-linux.rpm  ; fi && \
     #if [ "$BUILDPLATFORM" == "linux/arm64" ] ; then wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=xxx; oraclelicense=accept-securebackup-cookie" "$DOWNLOAD_ARM_LINK" -O /tmp/jdk-8-linux.rpm  ; fi && \
-    yum -y install /tmp/jdk-*.rpm && \
-    /bin/rm -f /tmp/jdk-*.rpm && \
+    yum -y install /tmp/jre-*.rpm && \
+    /bin/rm -f /tmp/jre-*.rpm && \
     echo "export JAVA_HOME=/usr/java/latest" >> /etc/profile && \
     echo "export PATH=\$JAVA_HOME/bin:\$PATH" >> /etc/profile && \
     wget "$NODE_EPORTER_LINK" -O /tmp/node_exporter.tar.gz && \

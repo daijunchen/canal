@@ -1,7 +1,5 @@
-FROM canal/osbase:v3-amd64
+FROM planyun/osbase:v1
 #FROM canal/osbase:v3-arm64
-
-LABEL agapple (jianghang115@gmail.com)
 
 # install canal
 COPY image/ /tmp/docker/
