@@ -67,6 +67,10 @@ public class AdapterCanalConfig extends CanalClientConfig {
                 ds.setTimeBetweenEvictionRunsMillis(60000);
                 ds.setMinEvictableIdleTimeMillis(300000);
                 ds.setValidationQuery("select 1");
+
+                //fix: 设置连接池级别为rc，避免死锁问题
+                ds.setDefaultTransactionIsolation(2);
+
                 try {
                     ds.init();
                 } catch (SQLException e) {
