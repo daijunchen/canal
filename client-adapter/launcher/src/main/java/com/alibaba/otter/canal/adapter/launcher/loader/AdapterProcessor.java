@@ -226,6 +226,9 @@ public class AdapterProcessor {
                                     syncSwitch.off(canalDestination);
                                     logger.error("finish turn off switch of destination:" + canalDestination);
                                 } else {
+                                    //fix: adapter运行后如果与server断开连接，不会尝试重试，只会抛出异常，所以需要在拿到异常后重新连接
+                                    canalMsgConsumer.connect();
+
                                     canalMsgConsumer.ack();
                                     logger.error(e.getMessage() + " Error sync but ACK!", e);
                                 }
